@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "scrapegraph-test"
+version = "0.1.0"
+description = ""
+authors = ["momonong <morrischen2.9@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+scrapegraphai = "^1.37.1"
+langchain = "^0.3.17"
+langchain-community = "^0.3.16"
+playwright = "^1.49.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
