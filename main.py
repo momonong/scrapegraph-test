@@ -1,14 +1,18 @@
 import os
 from dotenv import load_dotenv
-from scrapegraphai.graphs import SmartScraperGraph, SmartScraperMultiGraph
+from scrapegraphai.graphs import (
+    SmartScraperGraph,
+    SmartScraperMultiGraph,
+    OmniScraperGraph,
+)
 from scrapegraphai.utils import prettify_exec_info
 from langchain_openai import AzureChatOpenAI, OpenAIEmbeddings
 import warnings
 
-# 過濾 azure_endpoint 參數的 warning
+# 過濾參數的 warning
 warnings.filterwarnings(
     "ignore",
-    message="WARNING! azure_endpoint is not default parameter.",
+    message=r"WARNING! (azure_endpoint|model_instance|model_tokens) is not default parameter\.",
 )
 
 load_dotenv()
@@ -40,24 +44,61 @@ graph_config = {
         "model_instance": llm_model_instance,
         "model_tokens": model_tokens_count,
     },
-    "embeddings": {
-        "model_instance": embedder_model_instance
-    },
+    "embeddings": {"model_instance": embedder_model_instance},
 }
 
 # ************************************************
 # Create the SmartScraperGraph instance and run it
 # ************************************************
-smart_scraper_graph = SmartScraperGraph(
-    prompt="List me all the FAQ with their answers",
-    # 國際生入學FAQ
-    # source="https://oia.ncku.edu.tw/p/404-1032-229844.php?Lang=zh-tw",
-    # 陸生入學FAQ
-    # source="https://oia.ncku.edu.tw/p/404-1032-235224.php?Lang=zh-tw", 
-    # 其他FAQ
-    source="https://oia.ncku.edu.tw/p/404-1032-229841.php?Lang=zh-tw",
+# smart_scraper_graph = SmartScraperGraph(
+#     # FAQ prompt
+#     prompt="List me all the FAQ with their answers",
+#     # other prompt
+#     # prompt="List me the needed information about 註冊/報到 that sudents would ask in this page and write in traditional Chinese.",
+
+#     # 國際生入學FAQ
+#     # source="https://oia.ncku.edu.tw/p/404-1032-229844.php?Lang=zh-tw",
+#     # 陸生入學FAQ
+#     source="https://oia.ncku.edu.tw/p/404-1032-235224.php?Lang=zh-tw",
+#     # 其他FAQ
+#     # source="https://oia.ncku.edu.tw/p/404-1032-229841.php?Lang=zh-tw",
+#     # 註冊/報到
+#     # source="https://oia.ncku.edu.tw/p/404-1032-230516.php?Lang=zh-tw",
+
+#     config=graph_config,
+# )
+
+# smart_scraper_graph = SmartScraperMultiGraph(
+#     # FAQ prompt
+#     prompt="List me all the FAQ with their answers",
+#     # other prompt
+#     # prompt="List me the needed information about 註冊/報到 that sudents would ask in this page and write in traditional Chinese.",
+
+#     # 國際生入學FAQ + 陸生入學FAQ
+#     source=[
+#         "https://oia.ncku.edu.tw/p/404-1032-229844.php?Lang=zh-tw",
+#         "https://oia.ncku.edu.tw/p/404-1032-235224.php?Lang=zh-tw"
+#     ],
+
+#     config=graph_config,
+# )
+
+smart_scraper_graph = OmniScraperGraph(
+    # FAQ prompt
+    # prompt="Explain the steps in the registration process for international students in traditional chinese.",
+    # map prompt
+    prompt="List me all the 校區 in NCKU",
+    # other prompt
+    # prompt="List me the needed information about 註冊/報到 that sudents would ask in this page and write in traditional Chinese.",
+
+    # 院系交換生 註冊報到流程
+    # source="https://oia.ncku.edu.tw/p/404-1032-230516.php?Lang=zh-tw",
+    # map
+    source="https://oia.ncku.edu.tw/p/404-1032-230305.php?Lang=zh-tw",
+
     config=graph_config,
 )
+
 
 print("開始執行 scraping 任務...")
 result = smart_scraper_graph.run()
