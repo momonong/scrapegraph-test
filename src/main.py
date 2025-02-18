@@ -30,7 +30,7 @@ def main():
     scraper_methods.run_smart_scraper_graph(prompt_graph, source_graph, config)
 
     print("\n=== 執行 SmartScraperMultiGraph ===")
-    scraper_methods.run_smart_scraper_multi_graph(prompt_graph, source_multi, config)
+    scraper_methods.run_smart_scraper_multi_graph(prompt_multi, source_multi, config)
 
     print("\n=== 執行 OmniScraperGraph ===")
     scraper_methods.run_omni_scraper_graph(prompt_omni, source_omni, config)
