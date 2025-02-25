@@ -1,7 +1,7 @@
 # src/main.py
 import warnings
-from scraper import scraper_methods
-from config import init_config
+from src.scraper import scraper_methods
+from src.config import init_config
 
 # 過濾參數的 warning
 warnings.filterwarnings(

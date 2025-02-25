@@ -1,4 +1,3 @@
-# src/scraper/scraper_methods.py
 from scrapegraphai.graphs import SmartScraperGraph, SmartScraperMultiGraph, OmniScraperGraph
 from scrapegraphai.utils import prettify_exec_info
 
