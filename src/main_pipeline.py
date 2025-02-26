@@ -27,11 +27,12 @@ def main():
     print(tabulate(df.head(), headers="keys", tablefmt="grid", showindex=False))
     print("\n")
 
-    # 更新 DataFrame 中的 Result 欄位
-    df_updated = update_dataframe(df, config)
+    # 更新 DataFrame 中的 Result 欄位（並即時更新試算表）
+    df_updated = update_dataframe(df, config, worksheet)
 
-    # 寫回試算表
-    write_back_sheet(worksheet, df_updated)
+    print("所有資料已更新完成！")
+    print("更新後的資料預覽：")
+    print(tabulate(df_updated.head(), headers="keys", tablefmt="grid", showindex=False))
 
 
 if __name__ == "__main__":
