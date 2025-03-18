@@ -5,7 +5,6 @@ from src.pipeline.update_file import (
     get_gspread_client,
     read_sheet,
     update_dataframe,
-    write_back_sheet,
 )
 
 # 過濾參數的 warning
@@ -32,8 +31,8 @@ def main():
 
     print("所有資料已更新完成！")
     print("更新後的資料預覽：")
-    print(tabulate(df_updated.head(), headers="keys", tablefmt="grid", showindex=False))
-
+    print(tabulate(df_updated.head(), headers="keys", tablefmt="grid", showindex=False, maxcolwidths=[20, 20, 40]))
+    
 
 if __name__ == "__main__":
     main()

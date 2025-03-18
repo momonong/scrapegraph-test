@@ -6,6 +6,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from tabulate import tabulate
 from src.scraper.scraper_methods import run_smart_scraper_graph
+from src.pipeline.save_result import save_result_to_txt
 from src.config import init_config  # 假設 config.py 有共用設定
 
 # 過濾不必要的 warning
@@ -78,12 +79,13 @@ def update_dataframe(df: pd.DataFrame, config: dict, worksheet) -> pd.DataFrame:
             prompt = row.get("Prompt")
             print(f"處理第 {idx+2} 行:")
             print(tabulate([["URL", url], ["Prompt", prompt]], tablefmt="plain"))
-            new_result = generate_result(url, prompt, config)
+            json_result, file_title = generate_result(url, prompt, config)
+            new_result = save_result_to_txt(json_result, file_title)
             df.at[idx, "Result"] = new_result
             print(f"更新結果： {new_result}\n")
             # 更新試算表中該行 "Result" 欄位
             cell = f"{result_col_letter}{idx+2}"  # 第1行是標題
-            worksheet.update(cell, new_result)
+            worksheet.update(cell, [[new_result]])
         else:
             print(f"第 {idx+2} 行已有結果，跳過。\n")
     return df
